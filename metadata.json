@@ -1,0 +1,6 @@
+{
+  "name": "Voxel Craft",
+  "description": "First-person 3D voxel survival sandbox game with procedural terrain, mining, building, crafting, mobs, and day-night cycle.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
