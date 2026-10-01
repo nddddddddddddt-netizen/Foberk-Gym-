@@ -55,6 +55,14 @@ enum class MobType(
         0.055f,
         floatArrayOf(0.25f, 0.50f, 0.25f, 1f), // Green rotting skin
         floatArrayOf(0.18f, 0.45f, 0.55f, 1f)  // Cyan shirt
+    ),
+    FIRE_DRAGON(
+        "Crimson Fire Dragon",
+        true,
+        45f,
+        0.065f,
+        floatArrayOf(0.85f, 0.15f, 0.12f, 1f), // Fiery crimson scales
+        floatArrayOf(1.0f, 0.70f, 0.10f, 1f)   // Golden glowing horns/eyes
     )
 }
 
@@ -95,7 +103,7 @@ class Mob(
 
         // AI decision making
         when (type) {
-            MobType.ZOMBIE -> {
+            MobType.ZOMBIE, MobType.FIRE_DRAGON -> {
                 // Find closest target (player or villager)
                 var targetX = playerX
                 var targetZ = playerZ

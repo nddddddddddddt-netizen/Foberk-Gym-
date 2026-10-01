@@ -192,6 +192,47 @@ enum class BlockType(
         topColor = floatArrayOf(0.18f, 0.18f, 0.18f, 1f),
         bottomColor = floatArrayOf(0.12f, 0.12f, 0.12f, 1f),
         sideColor = floatArrayOf(0.15f, 0.15f, 0.15f, 1f)
+    ),
+    LUCKY_BLOCK(
+        id = 18,
+        displayName = "Lucky Block",
+        isSolid = true,
+        isTransparent = false,
+        isLightSource = true,
+        hardness = 0.5f,
+        topColor = floatArrayOf(0.96f, 0.82f, 0.12f, 1f),
+        bottomColor = floatArrayOf(0.85f, 0.70f, 0.08f, 1f),
+        sideColor = floatArrayOf(0.92f, 0.78f, 0.10f, 1f)
+    ),
+    RUBY_ORE(
+        id = 19,
+        displayName = "Ruby Ore",
+        isSolid = true,
+        isTransparent = false,
+        hardness = 3.5f,
+        topColor = floatArrayOf(0.85f, 0.12f, 0.22f, 1f),
+        bottomColor = floatArrayOf(0.48f, 0.48f, 0.50f, 1f),
+        sideColor = floatArrayOf(0.80f, 0.15f, 0.25f, 1f)
+    ),
+    SOFA(
+        id = 20,
+        displayName = "Velvet Sofa",
+        isSolid = true,
+        isTransparent = false,
+        hardness = 0.8f,
+        topColor = floatArrayOf(0.68f, 0.18f, 0.18f, 1f),
+        bottomColor = floatArrayOf(0.42f, 0.25f, 0.15f, 1f),
+        sideColor = floatArrayOf(0.72f, 0.20f, 0.20f, 1f)
+    ),
+    FRIDGE(
+        id = 21,
+        displayName = "Kitchen Fridge",
+        isSolid = true,
+        isTransparent = false,
+        hardness = 1.5f,
+        topColor = floatArrayOf(0.88f, 0.90f, 0.92f, 1f),
+        bottomColor = floatArrayOf(0.70f, 0.72f, 0.75f, 1f),
+        sideColor = floatArrayOf(0.82f, 0.85f, 0.88f, 1f)
     );
 
     companion object {

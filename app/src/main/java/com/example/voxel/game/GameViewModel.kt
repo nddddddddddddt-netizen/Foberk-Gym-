@@ -7,10 +7,14 @@ import android.os.Vibrator
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.voxel.auth.AccountManager
 import com.example.voxel.entity.Mob
 import com.example.voxel.entity.MobState
 import com.example.voxel.entity.MobType
 import com.example.voxel.entity.Player
+import com.example.voxel.mod.AdventureMap
+import com.example.voxel.mod.ModManager
+import com.example.voxel.mod.WorldMapImporter
 import com.example.voxel.world.BlockType
 import com.example.voxel.world.RaycastResult
 import com.example.voxel.world.World
@@ -37,7 +41,9 @@ enum class GameScreen {
     PAUSE,
     SETTINGS,
     CREATOR_TOOLS,
-    DEATH
+    DEATH,
+    MOD_BROWSER,
+    ACCOUNT
 }
 
 enum class UiTheme(val displayName: String, val primaryColor: Color, val accentColor: Color) {
@@ -59,6 +65,9 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
 
     val soundSystem = SoundSystem()
     private val vibrator = application.getSystemService(Vibrator::class.java)
+
+    val modManager = ModManager(application)
+    val accountManager = AccountManager(application)
 
     var world = World(133742L)
     var player = Player(8f, 22f, 8f)
@@ -119,6 +128,9 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
         inventory.addItem(Item.WOOD_PLANKS_BLOCK, 16)
         inventory.addItem(Item.TORCH_BLOCK, 8)
         inventory.addItem(Item.BREAD, 4)
+        // Pre-package mod items from active Bedrock & Java mods
+        inventory.addItem(Item.LUCKY_BLOCK_ITEM, 4)
+        inventory.addItem(Item.RUBY_SWORD, 1)
         updateHotbarState()
     }
 
@@ -267,13 +279,27 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
         val type = hit.blockType
         if (type == BlockType.BEDROCK) return
 
+        accountManager.recordBlockMined()
         world.setBlock(hit.hitBlockX, hit.hitBlockY, hit.hitBlockZ, BlockType.AIR)
         soundSystem.playBlockBreak()
         vibrate(80)
 
-        // Drop item into inventory
-        val droppedItem = Item.fromBlock(type)
-        inventory.addItem(droppedItem, 1)
+        // Drop item into inventory (including Lucky Block surprise drop!)
+        if (type == BlockType.LUCKY_BLOCK) {
+            val r = Random.nextFloat()
+            when {
+                r < 0.35f -> inventory.addItem(Item.RUBY_GEM, 3)
+                r < 0.65f -> inventory.addItem(Item.LUCKY_PICKAXE, 1)
+                r < 0.85f -> inventory.addItem(Item.BREAD, 6)
+                else -> {
+                    inventory.addItem(Item.IRON_INGOT, 4)
+                    mobs.add(Mob(type = MobType.PIG, x = hit.hitBlockX.toFloat(), y = hit.hitBlockY.toFloat() + 1f, z = hit.hitBlockZ.toFloat()))
+                }
+            }
+        } else {
+            val droppedItem = Item.fromBlock(type)
+            inventory.addItem(droppedItem, 1)
+        }
         updateHotbarState()
     }
 
@@ -303,6 +329,7 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
             return // Cannot place inside player
         }
 
+        accountManager.recordBlockPlaced()
         world.setBlock(placeX, placeY, placeZ, blockType)
         soundSystem.playBlockPlace()
         inventory.consumeHeldItem()
@@ -352,6 +379,7 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
                 vibrate(100)
 
                 if (isDead) {
+                    accountManager.recordMobDefeated()
                     when (hitMob.type) {
                         MobType.COW -> inventory.addItem(Item.RAW_BEEF, 2)
                         MobType.PIG -> inventory.addItem(Item.RAW_PORKCHOP, 2)
@@ -362,6 +390,10 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
                         MobType.ZOMBIE -> {
                             inventory.addItem(Item.ROTTEN_FLESH, 2)
                             if (Random.nextFloat() < 0.25f) inventory.addItem(Item.IRON_INGOT, 1)
+                        }
+                        MobType.FIRE_DRAGON -> {
+                            inventory.addItem(Item.RUBY_GEM, 4)
+                            inventory.addItem(Item.RUBY_SWORD, 1)
                         }
                         else -> {}
                     }
@@ -540,6 +572,27 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
         initStartingInventory()
         initInitialMobs()
         _health.value = 20f
+        _screen.value = GameScreen.PLAYING
+    }
+
+    fun toggleMod(modId: String, enable: Boolean) {
+        modManager.toggleMod(modId, enable)
+        // Mark chunks dirty so custom blocks re-render
+        world.chunks.values.forEach { it.isDirty = true }
+    }
+
+    fun applyTexturePack() {
+        // Mark all chunks dirty to re-mesh with the new texture palette
+        world.chunks.values.forEach { it.isDirty = true }
+    }
+
+    fun loadAdventureMap(map: AdventureMap) {
+        world = World(map.seed)
+        WorldMapImporter.applyMapStructures(map, world)
+        player.respawn(map.spawnX, map.spawnY, map.spawnZ)
+        _health.value = player.health
+        _gameTime.value = world.gameTime
+        updateHotbarState()
         _screen.value = GameScreen.PLAYING
     }
 

@@ -37,21 +37,29 @@ enum class Item(
     TORCH_BLOCK("torch", "Torch", ItemCategory.BLOCK, blockType = BlockType.TORCH, iconEmoji = "🔥"),
     GLASS_BLOCK("glass", "Glass", ItemCategory.BLOCK, blockType = BlockType.GLASS, iconEmoji = "🪟"),
     BRICK_BLOCK("brick", "Bricks", ItemCategory.BLOCK, blockType = BlockType.BRICK, iconEmoji = "🧱"),
+    LUCKY_BLOCK_ITEM("lucky_block", "Lucky Block", ItemCategory.BLOCK, blockType = BlockType.LUCKY_BLOCK, iconEmoji = "❓"),
+    RUBY_ORE_ITEM("ruby_ore", "Ruby Ore", ItemCategory.BLOCK, blockType = BlockType.RUBY_ORE, iconEmoji = "🔴"),
+    SOFA_ITEM("sofa", "Velvet Sofa", ItemCategory.BLOCK, blockType = BlockType.SOFA, iconEmoji = "🛋️"),
+    FRIDGE_ITEM("fridge", "Kitchen Fridge", ItemCategory.BLOCK, blockType = BlockType.FRIDGE, iconEmoji = "🧊"),
 
     // Materials
     STICK("stick", "Stick", ItemCategory.MATERIAL, maxStack = 64, iconEmoji = "🥢"),
     COAL("coal", "Coal", ItemCategory.MATERIAL, maxStack = 64, iconEmoji = "⚫"),
     IRON_INGOT("iron_ingot", "Iron Ingot", ItemCategory.MATERIAL, maxStack = 64, iconEmoji = "🪙"),
+    RUBY_GEM("ruby_gem", "Ruby Gem", ItemCategory.MATERIAL, maxStack = 64, iconEmoji = "💎"),
     WOOL("wool", "White Wool", ItemCategory.MATERIAL, maxStack = 64, iconEmoji = "🧶"),
     ROTTEN_FLESH("rotten_flesh", "Rotten Flesh", ItemCategory.MATERIAL, maxStack = 64, iconEmoji = "🥩"),
 
     // Tools
     WOODEN_PICKAXE("wood_pickaxe", "Wooden Pickaxe", ItemCategory.TOOL, maxStack = 1, miningSpeedMultiplier = 2.0f, harvestLevel = 1, damage = 2.0f, iconEmoji = "⛏️"),
     STONE_PICKAXE("stone_pickaxe", "Stone Pickaxe", ItemCategory.TOOL, maxStack = 1, miningSpeedMultiplier = 4.0f, harvestLevel = 2, damage = 3.0f, iconEmoji = "⛏️"),
+    LUCKY_PICKAXE("lucky_pickaxe", "Golden Lucky Pickaxe", ItemCategory.TOOL, maxStack = 1, miningSpeedMultiplier = 6.0f, harvestLevel = 3, damage = 5.0f, iconEmoji = "⛏️"),
+    RUBY_PICKAXE("ruby_pickaxe", "Mythic Ruby Pickaxe", ItemCategory.TOOL, maxStack = 1, miningSpeedMultiplier = 8.0f, harvestLevel = 4, damage = 6.0f, iconEmoji = "⛏️"),
     WOODEN_AXE("wood_axe", "Wooden Axe", ItemCategory.TOOL, maxStack = 1, miningSpeedMultiplier = 2.0f, harvestLevel = 1, damage = 3.0f, iconEmoji = "🪓"),
     STONE_AXE("stone_axe", "Stone Axe", ItemCategory.TOOL, maxStack = 1, miningSpeedMultiplier = 3.5f, harvestLevel = 2, damage = 4.0f, iconEmoji = "🪓"),
     WOODEN_SWORD("wood_sword", "Wooden Sword", ItemCategory.WEAPON, maxStack = 1, damage = 4.0f, iconEmoji = "🗡️"),
     STONE_SWORD("stone_sword", "Stone Sword", ItemCategory.WEAPON, maxStack = 1, damage = 6.0f, iconEmoji = "⚔️"),
+    RUBY_SWORD("ruby_sword", "Mythic Ruby Sword", ItemCategory.WEAPON, maxStack = 1, damage = 9.5f, iconEmoji = "🗡️"),
 
     // Food
     APPLE("apple", "Apple", ItemCategory.FOOD, maxStack = 64, foodPoints = 4, iconEmoji = "🍎"),
@@ -80,6 +88,10 @@ enum class Item(
                 BlockType.TORCH -> TORCH_BLOCK
                 BlockType.GLASS -> GLASS_BLOCK
                 BlockType.BRICK -> BRICK_BLOCK
+                BlockType.LUCKY_BLOCK -> LUCKY_PICKAXE
+                BlockType.RUBY_ORE -> RUBY_GEM
+                BlockType.SOFA -> SOFA_ITEM
+                BlockType.FRIDGE -> FRIDGE_ITEM
                 else -> DIRT_BLOCK
             }
         }

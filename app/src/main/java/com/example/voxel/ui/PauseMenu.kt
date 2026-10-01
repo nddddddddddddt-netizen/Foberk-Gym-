@@ -87,6 +87,22 @@ fun PauseMenu(
                 }
 
                 Button(
+                    onClick = { viewModel.openScreen(GameScreen.MOD_BROWSER) },
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1565C0)),
+                    modifier = Modifier.fillMaxWidth().testTag("pause_mod_browser_button")
+                ) {
+                    Text("🧩 Mod Browser (menafex.xo.je)", fontSize = (14 * fontScale).sp, fontWeight = FontWeight.Bold)
+                }
+
+                Button(
+                    onClick = { viewModel.openScreen(GameScreen.ACCOUNT) },
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF00695C)),
+                    modifier = Modifier.fillMaxWidth().testTag("pause_account_button")
+                ) {
+                    Text("👤 Player Account & Stats", fontSize = (14 * fontScale).sp)
+                }
+
+                Button(
                     onClick = { viewModel.openScreen(GameScreen.SETTINGS) },
                     colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF37474F)),
                     modifier = Modifier.fillMaxWidth().testTag("open_settings_button")

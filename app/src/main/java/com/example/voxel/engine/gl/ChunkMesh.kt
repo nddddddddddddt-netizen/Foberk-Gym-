@@ -1,6 +1,7 @@
 package com.example.voxel.engine.gl
 
 import android.opengl.GLES20
+import com.example.voxel.mod.TextureConverter
 import com.example.voxel.world.BlockType
 import com.example.voxel.world.Chunk
 import com.example.voxel.world.World
@@ -101,6 +102,7 @@ class ChunkMesh(val chunkX: Int, val chunkZ: Int) {
                 for (y in 0 until Chunk.SIZE_Y) {
                     val block = chunk.getBlock(lx, y, lz)
                     if (block == BlockType.AIR) continue
+                    val colors = TextureConverter.getBlockColors(block)
 
                     val fx = wx.toFloat()
                     val fy = y.toFloat()
@@ -129,7 +131,7 @@ class ChunkMesh(val chunkX: Int, val chunkZ: Int) {
                             fx + 1f, fy + 1f, fz + 1f,
                             fx, fy + 1f, fz + 1f,
                             0f, 1f, 0f,
-                            block.topColor,
+                            colors[0],
                             ao1, ao2, ao3, ao4
                         )
                     }
@@ -143,7 +145,7 @@ class ChunkMesh(val chunkX: Int, val chunkZ: Int) {
                             fx + 1f, fy, fz,
                             fx, fy, fz,
                             0f, -1f, 0f,
-                            block.bottomColor,
+                            colors[1],
                             0.7f, 0.7f, 0.7f, 0.7f
                         )
                     }
@@ -166,7 +168,7 @@ class ChunkMesh(val chunkX: Int, val chunkZ: Int) {
                             fx + 1f, fy, fz + 1f,
                             fx, fy, fz + 1f,
                             0f, 0f, 1f,
-                            block.sideColor,
+                            colors[2],
                             aoTopLeft, aoTopRight, aoBotRight, aoBotLeft
                         )
                     }
@@ -189,7 +191,7 @@ class ChunkMesh(val chunkX: Int, val chunkZ: Int) {
                             fx, fy, fz,
                             fx + 1f, fy, fz,
                             0f, 0f, -1f,
-                            block.sideColor,
+                            colors[2],
                             aoTopLeft, aoTopRight, aoBotRight, aoBotLeft
                         )
                     }
@@ -212,7 +214,7 @@ class ChunkMesh(val chunkX: Int, val chunkZ: Int) {
                             fx + 1f, fy, fz,
                             fx + 1f, fy, fz + 1f,
                             1f, 0f, 0f,
-                            block.sideColor,
+                            colors[2],
                             aoTopLeft, aoTopRight, aoBotRight, aoBotLeft
                         )
                     }
@@ -235,7 +237,7 @@ class ChunkMesh(val chunkX: Int, val chunkZ: Int) {
                             fx, fy, fz + 1f,
                             fx, fy, fz,
                             -1f, 0f, 0f,
-                            block.sideColor,
+                            colors[2],
                             aoTopLeft, aoTopRight, aoBotRight, aoBotLeft
                         )
                     }

@@ -83,7 +83,7 @@ fun TouchControls(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Left: Creator Tools & Time icon
+            // Left: Creator Tools, Mod Browser & Time icon
             Row(verticalAlignment = Alignment.CenterVertically) {
                 IconButton(
                     onClick = { viewModel.openScreen(GameScreen.CREATOR_TOOLS) },
@@ -95,7 +95,19 @@ fun TouchControls(
                     Icon(Icons.Default.Build, contentDescription = "Creator Tools", tint = Color.White)
                 }
 
-                Spacer(modifier = Modifier.width(10.dp))
+                Spacer(modifier = Modifier.width(6.dp))
+
+                IconButton(
+                    onClick = { viewModel.openScreen(GameScreen.MOD_BROWSER) },
+                    modifier = Modifier
+                        .size(44.dp)
+                        .background(Color(0x991565C0), RoundedCornerShape(8.dp))
+                        .testTag("hud_mod_browser_button")
+                ) {
+                    Text("🧩", fontSize = (18 * fontScale).sp)
+                }
+
+                Spacer(modifier = Modifier.width(8.dp))
 
                 // Time of day badge
                 val timeName = when {

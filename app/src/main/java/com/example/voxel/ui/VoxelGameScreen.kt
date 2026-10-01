@@ -117,6 +117,12 @@ fun VoxelGameScreen(
             GameScreen.DEATH -> {
                 DeathScreen(viewModel = viewModel)
             }
+            GameScreen.MOD_BROWSER -> {
+                ModBrowserScreen(viewModel = viewModel, onClose = { viewModel.closeModals() })
+            }
+            GameScreen.ACCOUNT -> {
+                AccountDialog(viewModel = viewModel, onClose = { viewModel.closeModals() })
+            }
             GameScreen.PLAYING -> {
                 // HUD is rendered
             }

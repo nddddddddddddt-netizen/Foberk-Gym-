@@ -95,7 +95,7 @@ fun MainMenu(
                         Text("🎮", fontSize = (20 * fontScale).sp)
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
-                            text = "3D FIRST-PERSON SURVIVAL",
+                            text = "3D FIRST-PERSON SURVIVAL • v1.1",
                             color = Color(0xFFFFD54F),
                             fontSize = (12 * fontScale).sp,
                             fontWeight = FontWeight.Bold,
@@ -225,6 +225,24 @@ fun MainMenu(
                         }
 
                         Button(
+                            onClick = { viewModel.openScreen(GameScreen.MOD_BROWSER) },
+                            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1565C0)),
+                            shape = RoundedCornerShape(10.dp),
+                            modifier = Modifier.fillMaxWidth().testTag("main_mod_browser_button")
+                        ) {
+                            Text("🧩 Mod Browser (menafex.xo.je)", fontSize = (13 * fontScale).sp, fontWeight = FontWeight.Bold)
+                        }
+
+                        Button(
+                            onClick = { viewModel.openScreen(GameScreen.ACCOUNT) },
+                            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF00695C)),
+                            shape = RoundedCornerShape(10.dp),
+                            modifier = Modifier.fillMaxWidth().testTag("main_account_button")
+                        ) {
+                            Text("👤 Player Account & Skins", fontSize = (13 * fontScale).sp)
+                        }
+
+                        Button(
                             onClick = { viewModel.openScreen(GameScreen.SETTINGS) },
                             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF263238)),
                             shape = RoundedCornerShape(10.dp),
@@ -237,10 +255,13 @@ fun MainMenu(
             }
         }
 
-        // Render Settings Dialog if requested from main menu
+        // Render Dialogs if requested from main menu
         val currentScreen by viewModel.screen.collectAsState()
-        if (currentScreen == GameScreen.SETTINGS) {
-            SettingsDialog(viewModel = viewModel)
+        when (currentScreen) {
+            GameScreen.SETTINGS -> SettingsDialog(viewModel = viewModel)
+            GameScreen.MOD_BROWSER -> ModBrowserScreen(viewModel = viewModel, onClose = { viewModel.closeModals() })
+            GameScreen.ACCOUNT -> AccountDialog(viewModel = viewModel, onClose = { viewModel.closeModals() })
+            else -> {}
         }
     }
 }
